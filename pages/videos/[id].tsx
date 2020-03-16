@@ -1,5 +1,5 @@
 import { useRouter } from "next/router"
-import { PropsWithChildren } from "react"
+import { PropsWithChildren, useState } from "react"
 import { Avatar } from "../../components/avatar"
 import { Brand } from "../../components/brand"
 import { Page } from "../../components/page"
@@ -8,6 +8,7 @@ import { WithLove } from "../../components/with-love"
 import { people } from "../../data/people"
 import { videos } from "../../data/videos"
 import { formatLikes } from "../../functions/format-likes"
+import { motion } from "framer-motion"
 
 const Likes = ({
   count,
@@ -79,7 +80,8 @@ const Title = ({ text, children }: PropsWithChildren<{ text: string }>) => {
 }
 
 const VideoPage: React.FC = () => {
-  const id = useRouter().query.id as string
+  const [id, setId] = useState(useRouter().query.id)
+
   const video = videos.find(video => video.id === id)
   return (
     <Page>
@@ -87,7 +89,16 @@ const VideoPage: React.FC = () => {
         <Brand />
       </Page.Header>
       <Page.Content>
-        {video && <Video url={video.url} title={video.title} controls />}
+        <motion.div initial="exit" animate="enter" exit="exit">
+          <motion.div
+            variants={{
+              exit: { opacity: 0, transition: { duration: 0.3 } },
+              enter: { opacity: 1, transition: { duration: 0.3 } },
+            }}
+          >
+            {video && <Video url={video.url} title={video.title} controls />}
+          </motion.div>
+        </motion.div>
         {video && (
           <Title text={video.title}>
             <Likes count={video.likes} symbol={video.likeSymbol} />

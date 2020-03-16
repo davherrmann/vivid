@@ -5,6 +5,7 @@ import { Page } from "../components/page"
 import { Video } from "../components/video"
 import { videos } from "../data/videos"
 import { WithLove } from "../components/with-love"
+import { motion } from "framer-motion"
 
 // colors from https://coolors.co/dbcdc6-ead7d1-dd99bb-7b506f-1f1a38
 
@@ -30,11 +31,18 @@ const Search = ({ onChange }: { onChange: (input: string) => void }) => {
 const Videos: React.FC<PropsWithChildren<{}>> = ({ children }) => {
   return (
     <div className="wrapper">
-      <div className="videos">{children}</div>
+      <motion.div
+        initial="exit"
+        animate="enter"
+        exit="exit"
+        variants={{
+          enter: { transition: { duration: 0.5 } },
+          exit: { transition: { staggerChildren: 0.05 } },
+        }}
+      >
+        <div className="videos">{children}</div>
+      </motion.div>
       <style jsx>{`
-        .wrapper {
-          overflow: hidden;
-        }
         .videos {
           display: flex;
           flex-wrap: wrap;
@@ -72,13 +80,26 @@ export default () => {
                 as={"/videos/" + video.id}
               >
                 <a>
-                  <Video
-                    url={video.url}
-                    title={video.title}
-                    authorId={video.authorId}
-                    likes={video.likes}
-                    likeSymbol={video.likeSymbol}
-                  />
+                  <motion.div
+                    variants={{
+                      enter: {
+                        opacity: 1,
+                        transition: { duration: 0.5 },
+                      },
+                      exit: {
+                        opacity: 0,
+                        transition: { duration: 0.3 },
+                      },
+                    }}
+                  >
+                    <Video
+                      url={video.url}
+                      title={video.title}
+                      authorId={video.authorId}
+                      likes={video.likes}
+                      likeSymbol={video.likeSymbol}
+                    />
+                  </motion.div>
                 </a>
               </Link>
             ))}

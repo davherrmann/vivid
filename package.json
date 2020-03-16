@@ -5,9 +5,13 @@
   "license": "MIT",
   "scripts": {
     "start": "next dev",
+    "dev": "next dev",
+    "build": "next build",
+    "prod": "next start",
     "type-check": "tsc"
   },
   "dependencies": {
+    "framer-motion": "^1.9.1",
     "next": "^9.3.0",
     "react": "^16.13.0",
     "react-dom": "^16.13.0"
