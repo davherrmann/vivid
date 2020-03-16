@@ -1,2 +1,0 @@
-# vivid
-Created with CodeSandbox
